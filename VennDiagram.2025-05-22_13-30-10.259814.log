@@ -1,0 +1,23 @@
+INFO [2025-05-22 13:30:10] $x
+INFO [2025-05-22 13:30:10] up_genes_list
+INFO [2025-05-22 13:30:10] 
+INFO [2025-05-22 13:30:10] $filename
+INFO [2025-05-22 13:30:10] NULL
+INFO [2025-05-22 13:30:10] 
+INFO [2025-05-22 13:30:10] $fill
+INFO [2025-05-22 13:30:10] c("lightblue", "salmon", "palegreen", "orange", "lightgreen", 
+INFO [2025-05-22 13:30:10]     "yellow", "lightpink", "blue", "red", "purple")
+INFO [2025-05-22 13:30:10] 
+INFO [2025-05-22 13:30:10] $alpha
+INFO [2025-05-22 13:30:10] [1] 0.5
+INFO [2025-05-22 13:30:10] 
+INFO [2025-05-22 13:30:10] $cex
+INFO [2025-05-22 13:30:10] [1] 1.5
+INFO [2025-05-22 13:30:10] 
+INFO [2025-05-22 13:30:10] $cat.cex
+INFO [2025-05-22 13:30:10] [1] 1.2
+INFO [2025-05-22 13:30:10] 
+INFO [2025-05-22 13:30:10] $main
+INFO [2025-05-22 13:30:10] [1] "Ortak Up Genler"
+INFO [2025-05-22 13:30:10] 
+ERROR [2025-05-22 13:30:10] Incorrect number of elements.
