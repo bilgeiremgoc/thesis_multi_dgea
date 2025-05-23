@@ -1,0 +1,34 @@
+INFO [2025-05-23 12:39:00] $x
+INFO [2025-05-23 12:39:00] list(Endometriosis = all_up_endo, Autoimmune = all_up_auto)
+INFO [2025-05-23 12:39:00] 
+INFO [2025-05-23 12:39:00] $category.names
+INFO [2025-05-23 12:39:00] c("Endometriosis", "Autoimmune")
+INFO [2025-05-23 12:39:00] 
+INFO [2025-05-23 12:39:00] $filename
+INFO [2025-05-23 12:39:00] [1] "venn_up_genes.png"
+INFO [2025-05-23 12:39:00] 
+INFO [2025-05-23 12:39:00] $output
+INFO [2025-05-23 12:39:00] [1] TRUE
+INFO [2025-05-23 12:39:00] 
+INFO [2025-05-23 12:39:00] $imagetype
+INFO [2025-05-23 12:39:00] [1] "png"
+INFO [2025-05-23 12:39:00] 
+INFO [2025-05-23 12:39:00] $fill
+INFO [2025-05-23 12:39:00] c("tomato", "skyblue")
+INFO [2025-05-23 12:39:00] 
+INFO [2025-05-23 12:39:00] $alpha
+INFO [2025-05-23 12:39:00] [1] 0.5
+INFO [2025-05-23 12:39:00] 
+INFO [2025-05-23 12:39:00] $cex
+INFO [2025-05-23 12:39:00] [1] 2
+INFO [2025-05-23 12:39:00] 
+INFO [2025-05-23 12:39:00] $cat.cex
+INFO [2025-05-23 12:39:00] [1] 2
+INFO [2025-05-23 12:39:00] 
+INFO [2025-05-23 12:39:00] $cat.col
+INFO [2025-05-23 12:39:00] c("tomato", "skyblue")
+INFO [2025-05-23 12:39:00] 
+INFO [2025-05-23 12:39:00] $main
+INFO [2025-05-23 12:39:00] [1] "Upregulated Genes Overlap"
+INFO [2025-05-23 12:39:00] 
+ERROR [2025-05-23 12:39:00] NAs in dataset
