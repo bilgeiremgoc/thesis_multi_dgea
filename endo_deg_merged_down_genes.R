@@ -37,7 +37,7 @@ dge_results_down_genes_GSE120103 <- read_excel("up_down_genes_endo/deg_GSE120103
 
 
 
-down_lists <- list(
+down_endo_lists <- list(
   GSE7305 = dge_results_down_genes_GSE7305$GeneSymbol,
   GSE7307 = dge_results_down_genes_GSE7307$GeneSymbol,
   GSE11691 = dge_results_down_genes_GSE11691$GeneSymbol,
@@ -74,16 +74,16 @@ gene_counts_df <- as.data.frame(gene_counts)
 gene_counts_sorted <- gene_counts_df[order(-gene_counts_df$Freq), ]
 
 
-top57_down_genes <- gene_counts_df %>%
+top100_down_genes <- gene_counts_df %>%
   arrange(desc(Freq)) %>%
-  head(57)
+  head(100)
 
-write.table(top57_down_genes$Var1, 
-            file = "top57_common_down_genes.txt", 
+write.table(top100_down_genes$Var1, 
+            file = "top100_common_down_genes.txt", 
             quote = FALSE, 
             row.names = FALSE, 
             col.names = FALSE)
-
+write_xlsx(gene_counts_sorted, "total_down_endo_genes_sorted.xlsx")
 
 
 

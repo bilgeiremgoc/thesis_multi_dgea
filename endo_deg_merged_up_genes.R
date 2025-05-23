@@ -29,11 +29,11 @@ dge_results_up_genes_GSE120103 <- readxl::read_excel("up_down_genes_endo/deg_GSE
   filter(logFC > 1 & adj.P.Val < 0.05)
 
 
-up_lists <- list(
+up_endo_lists <- list(
   GSE7305 = dge_results_up_genes_GSE7305$GeneSymbol,
   GSE7307 = dge_results_up_genes_GSE7307$GeneSymbol,
   GSE11691 = dge_results_up_genes_GSE11691$GeneSymbol,
-  GSE23309 = dge_results_up_genes_GSE23309$GeneSymbol,
+  GSE23309 = dge_results_up_genes_GSE23339$GeneSymbol,
   GSE25628 = dge_results_up_genes_GSE25628$GeneSymbol,
   GSE51981 = dge_results_up_genes_GSE51981$GeneSymbol,
   GSE87809 = dge_results_up_genes_GSE87809$GeneSymbol,
@@ -64,6 +64,7 @@ writeLines(common_up_genes_top5, "common_up_genes_top5.txt")
 
 gene_counts_df <- as.data.frame(gene_counts)
 
+writexl::write_xlsx(gene_counts_sorted, "total_up_endo_genes_sorted.xlsx")
 
 top532_genes <- gene_counts_df %>%
   arrange(desc(Freq)) %>%
