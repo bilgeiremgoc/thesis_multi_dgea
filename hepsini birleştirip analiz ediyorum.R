@@ -54,14 +54,13 @@ final_up <- up_merged %>%
 final_down <- down_merged %>%
   select(GeneSymbol, logFC_auto, adj.P.Val_auto, logFC_endo, adj.P.Val_endo, Regulation)
 
-# 9. Birleştir ve dışa aktar
 final_combined <- bind_rows(final_up, final_down)
 
+unique_list_data <- unique(final_combined$GeneSymbol)
+print(unique_list_data)
 
-write_xlsx(final_combined, "ortak_gen_istatistikleri_tum_sayfalar.xlsx")
+writexl::write_xlsx(final_combined, "ortak_gen_istatistikleri.xlsx")
 
-# Bilgi mesajı
-cat("İşlem tamamlandı. 'ortak_gen_istatistikleri_tum_sayfalar.xlsx' adlı dosya oluşturuldu.\n")
 
 
 final_up_filtered <- final_up %>% filter(logFC_auto > 1.5 & logFC_endo > 1.5)
@@ -70,6 +69,10 @@ final_down_filtered <- final_down %>% filter(logFC_auto < -1.5 & logFC_endo < -1
 top_up <- final_up %>% arrange(desc(logFC_auto + logFC_endo)) %>% slice_head(n = 300)
 top_down <- final_down %>% arrange(logFC_auto + logFC_endo) %>% slice_head(n = 300)
 
+writexl::write_xlsx(final_up_filtered, "final_up_filtered.xlsx")
+writexl::write_xlsx(final_down_filtered, "final_down_filtered.xlsx")
+
+final_combined_cleaned <- bind_rows(final_up_filtered, final_down_filtered)
 
 
 gen_data <- read_xlsx("ortak_gen_istatistikleri_tum_sayfalar.xlsx")
