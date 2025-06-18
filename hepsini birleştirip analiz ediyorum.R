@@ -146,3 +146,171 @@ dotplot(reactome, showCategory = 15)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+library(xCell)
+library(readxl)
+library(dplyr)
+
+df1 <- read_xlsx("xcell_endo/deg_GSE7305_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE7305")
+
+df2 <- read_xlsx("xcell_endo/deg_GSE7307_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE7307")
+
+df3 <- read_xlsx("xcell_endo/deg_GSE11691_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE11691")
+
+df4 <- read_xlsx("xcell_endo/deg_GSE23339_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE23339")
+
+df5 <- read_xlsx("xcell_endo/deg_GSE25628_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE25628")
+
+df6 <- read_xlsx("xcell_endo/deg_GSE51981_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE51981")
+
+df7 <- read_xlsx("xcell_endo/deg_GSE105764_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE105764")
+
+
+endo_all <- bind_rows(df1, df2, df3, df4, df5, df6, df7)
+
+
+auto1 <- read_xlsx("xcell_auto/deg_GSE11501_CD_SLE_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE11501")
+
+auto2 <- read_xlsx("xcell_auto/deg_GSE1919_RA_SLE_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE1919")
+
+auto3 <- read_xlsx("xcell_auto/deg_GSE21942_MS_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE21942")
+
+auto4 <- read_xlsx("xcell_auto/deg_GSE40611_SS_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE40611")
+
+auto5 <- read_xlsx("xcell_auto/deg_GSE43591_MS_SLE_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE43591")
+
+auto6 <- read_xlsx("xcell_auto/deg_GSE50772_SLE_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE50772")
+
+auto7 <- read_xlsx("xcell_auto/deg_GSE51092_SLE_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE51092")
+
+auto8 <- read_xlsx("xcell_auto/deg_GSE55235_RA_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE55235")
+
+auto9 <- read_xlsx("xcell_auto/deg_GSE55457_RA_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE55457")
+
+auto10 <- read_xlsx("xcell_auto/deg_GSE61635_SLE_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE61635")
+
+auto11 <- read_xlsx("xcell_auto/deg_GSE66795_SLE_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE66795")
+
+auto12 <- read_xlsx("xcell_auto/deg_GSE72326_SLE_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE72326")
+
+auto13 <- read_xlsx("xcell_auto/deg_GSE77298_RA_SLE_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE77298")
+
+auto14 <- read_xlsx("xcell_auto/deg_GSE81622_SLE_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE81622")
+
+auto15 <- read_xlsx("xcell_auto/deg_GSE84844_SS_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE84844")
+
+auto16 <- read_xlsx("xcell_auto/deg_GSE87466_UC_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE87466")
+
+auto17 <- read_xlsx("xcell_auto/deg_GSE87473_UC_xCell_Results.xlsx") %>%
+  mutate(Dataset = "GSE87473")
+
+auto18 <- read_xlsx("xcell_auto/xcell_results_deg_GSE138198_HT.xlsx") %>%
+  mutate(Dataset = "GSE138198")
+
+auto_all <- bind_rows(auto1, auto2, auto3, auto4, auto5, auto6, auto7, auto8, auto9, auto10, auto11, auto12, auto13, auto14, auto15, auto16, auto17, auto18) 
+
+
+library(tidyr)
+library(dplyr)
+
+# Endometriozis verisi uzun formata
+endo_long <- endo_all %>%
+  pivot_longer(cols = -c(Cell_Type, Dataset), 
+               names_to = "Sample", 
+               values_to = "Score") %>%
+  mutate(Group = "Endometriosis")
+
+# Otoimmün verisi uzun formata
+auto_long <- auto_all %>%
+  pivot_longer(cols = -c(Cell_Type, Dataset), 
+               names_to = "Sample", 
+               values_to = "Score") %>%
+  mutate(Group = "Autoimmune")
+endo_long_clean <- endo_long %>%
+  drop_na(Score)
+
+auto_long_clean <- auto_long %>%
+  drop_na(Score)
+
+
+
+merged_long <- bind_rows(endo_long_clean, auto_long_clean)
+
+
+stats <- merged_long %>%
+  group_by(Cell_Type) %>%
+  summarise(
+    p_value = tryCatch(wilcox.test(Score ~ Group)$p.value, error = function(e) NA)
+  ) %>%
+  mutate(adj_p_value = p.adjust(p_value, method = "bonferroni")) %>%
+  arrange(p_value)
+
+
+sig_cells <- stats %>% filter(adj_p_value < 0.05)
+
+
+library(ggplot2)
+
+top20 <- sig_cells$Cell_Type[1:20]
+
+plot_data <- merged_long %>% filter(Cell_Type %in% top20)
+
+ggplot(plot_data, aes(x = Group, y = Score, fill = Group)) +
+  geom_boxplot(outlier.shape = NA) +
+  facet_wrap(~ Cell_Type, scales = "free_y") +
+  theme_minimal() +
+  labs(title = "xCell Skor Karşılaştırması – En Anlamlı Hucre Tipleri")
+
+
+
+library(pheatmap)
+
+heat_df <- merged_long %>%
+  filter(Cell_Type %in% sig_cells$Cell_Type) %>%
+  group_by(Cell_Type, Group) %>%
+  summarise(mean_score = mean(Score, na.rm = TRUE)) %>%
+  pivot_wider(names_from = Group, values_from = mean_score)
+
+heat_matrix <- as.matrix(heat_df[,-1])
+rownames(heat_matrix) <- heat_df$Cell_Type
+
+pheatmap(heat_matrix, cluster_rows = TRUE, cluster_cols = FALSE,
+         main = "xCell Ort. Skorları – Anlamlı Hücre Tipleri",
+         display_numbers = TRUE)
+
+
+
+
