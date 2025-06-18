@@ -73,7 +73,7 @@ writexl::write_xlsx(final_up_filtered, "final_up_filtered.xlsx")
 writexl::write_xlsx(final_down_filtered, "final_down_filtered.xlsx")
 
 final_combined_cleaned <- bind_rows(final_up_filtered, final_down_filtered)
-
+writexl::write_xlsx(final_combined_cleaned, "final_combined_cleaned.xlsx")
 
 gen_data <- read_xlsx("ortak_gen_istatistikleri_tum_sayfalar.xlsx")
 
