@@ -262,6 +262,7 @@ auto_long <- auto_all %>%
                names_to = "Sample", 
                values_to = "Score") %>%
   mutate(Group = "Autoimmune")
+
 endo_long_clean <- endo_long %>%
   drop_na(Score)
 
@@ -271,7 +272,7 @@ auto_long_clean <- auto_long %>%
 
 
 merged_long <- bind_rows(endo_long_clean, auto_long_clean)
-
+writexl::write_xlsx(merged_long, "xcell_merged_long.xlsx")
 
 stats <- merged_long %>%
   group_by(Cell_Type) %>%
